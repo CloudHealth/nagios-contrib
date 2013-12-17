@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'optparse'
 require 'json'
 require 'time'
@@ -7,19 +9,17 @@ require 'net/https'
 
 def send_metric hostname, metric_name, value, units, ts, dimension
   metric_data = {
-      :hostname => hostname,
-      :namespace => 'CloudHealth/Nagios',
-      :metric_data => [
-          { :metric_name => metric_name,
-            :value       => value,
-            :unit        => units,
-            :timestamp   => Time.at(ts.to_i).iso8601,
-            :dimensions  => dimension
-          },
-      ]
+    :hostname => hostname,
+    :namespace => 'CloudHealth/Nagios',
+    :metric_data => [
+      { :metric_name => metric_name,
+        :value       => value,
+        :unit        => units,
+        :timestamp   => Time.at(ts.to_i).iso8601,
+        :dimensions  => dimension
+      },
+    ]
   }
-
-  # DEBUG: IO.binwrite("/tmp/api_metrics_#{metric_name.downcase}_1.json", JSON.generate(metric_data))
 
   uri = URI('https://api.cloudhealthtech.com/v1/host/metrics')
   req = Net::HTTP::Post.new(uri.request_uri)
@@ -27,16 +27,16 @@ def send_metric hostname, metric_name, value, units, ts, dimension
   req.content_type = 'application/json'
   req.use_ssl = true
   req.verify_mode = OpenSSL::SSL::VERIFY_NONE
-  req['Access-Token'] = 'YOUR API KEY'
+  req['Access-Token'] = INSERT YOUR API KEY
   res = Net::HTTP.start(uri.hostname, uri.port) {|http|
     response = http.request(req)
     case response
       when Net::HTTPSuccess then
-        puts "SUCCESS"
+
       when Net::HTTPBadRequest
-        puts "ERROR"
+        $strerr.puts "ERROR"
       else
-        puts "STATUS CODE: #{response.code}"
+        $strerr.puts "STATUS CODE: #{response.code}"
     end
   }
 end
@@ -67,12 +67,6 @@ File.open($filename, 'r') do |infile|
     perf_data  = parts[6] # user=0.00% system=0.20% iowait=0.00% idle=99.80%;90;100
 
     case service
-      when 'CPU Stats'
-        #metric_name = 'CPU'
-        #units = 'Percent'
-        #dimension = []
-        #value = 1
-        next
       when 'Root Partition'
         metric_name = 'FileSystemUsed'
         dimension = [{:name => 'mount', :value => '/'}]
