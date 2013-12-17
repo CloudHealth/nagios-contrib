@@ -41,4 +41,14 @@ define command {
 }
 ```
 
+4. Add `upload_perfdata_to_cloudhealth.rb` to your nagios plugins folder, and `chmod 755` it.
+5. Edit `upload_perfdata_to_cloudhealth.rb` and change the Access-Token to the value you got from the CHT Portal.
+6. Restart nagios for the changes to take effect: `/etc/init.d/nagios restart`
+
+### Testing the setup
+
+1. You can remove the "-d" flag (and restart nagios) so that the files are not deleted. Also, prior to restarting, you can change the interval from 900 to something like 60 to get the files generated more frequently.
+2. Double check that the files contain the services you enabled. If the service runs less frequently than our interval, then some of the perfdata files might be empty.
+3. Manually run the script: `/usr/lib/nagios/plugins/upload_perfdata_to_cloudhealth.rb -f /tmp/service-perfdata.1387301134` and make sure there are no errors outputted.
+
 
