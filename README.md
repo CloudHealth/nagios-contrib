@@ -32,7 +32,7 @@ define service {
 }
 ```
 
-3. Create the `process-service-perfdata-file` command. This will move the existing perfdata file to a temp file every `service_perfdata_file_processing_interval` seconds, and then send it to our customer script. The "-d" flag tells the script to delete the file when done.
+3. Create the `process-service-perfdata-file` command. This will move the existing perfdata file to a temp file every `service_perfdata_file_processing_interval` seconds, and then send it to our custom script. The "-d" flag tells the script to delete the file when done.
 
 ```
 define command {
