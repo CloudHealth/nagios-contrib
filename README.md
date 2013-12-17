@@ -1,12 +1,12 @@
 nagios-contrib
 ==============
 
-Cloudhealth specific Nagios scripts
+CloudHealth specific Nagios scripts.
 
-Performance Data
+Uploading Performance Data
 ----------------
 
-Cloudhealth's API has the ability to take in the raw service performance data and parse it without you needing to convert it into a metric first.
+CloudHealth's Platform API has the ability to take in the raw service performance data and parse it without you needing to convert it into a metric first.
 
 ### Setup
 
