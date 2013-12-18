@@ -54,17 +54,15 @@ sizes = { 'KB' => 1024, 'MB' => 1024*1024, 'GB' => 1024*1024*1024, 'TB' => 1024*
 
 File.open($filename, 'r') do |infile|
   while (line = infile.gets)
-    parts = line.split('|')
-    next unless parts.length == 7
+    parts = line.chomp.split('|')
+    next if parts.length < 5
 
-    #1386612532|localhost|CPU Stats|5.032|0.160|CPU OK : idle 99.80%|user=0.00% system=0.20% iowait=0.00% idle=99.80%;90;100
+    #service_perfdata_file_template=$TIMET$|$HOSTADDRESS$|$SERVICEDESC$|$SERVICEOUTPUT$|$SERVICEPERFDATA$|$SERVICEEXECUTIONTIME$|$SERVICELATENCY$|$LASTSERVICECHECK$|$HOSTGROUPNAMES$
     ts         = parts[0] # 1386612532
     hostname   = parts[1] # localhost
     service    = parts[2] # CPU Stats
-    runtime    = parts[3] # 5.032
-    latency    = parts[4] # 0.160
-    srv_output = parts[5] # CPU OK : idle 99.80%
-    perf_data  = parts[6] # user=0.00% system=0.20% iowait=0.00% idle=99.80%;90;100
+    srv_output = parts[3] # CPU OK : idle 99.80%
+    perf_data  = parts[4] # user=0.00% system=0.20% iowait=0.00% idle=99.80%;90;100
 
     case service
       when 'Root Partition'
